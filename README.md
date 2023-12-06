@@ -1,19 +1,19 @@
 <h1 align="center">🌦️ Whether App - Crystal Ball Project! 🌈</h1>
 
 <p align="center">
-  🚀 Explore Climate Trends, Visualize Data, and Predict Weather with Whether App! 📊✨
+  <strong>Explore Climate Trends, Visualize Data, and Predict Weather with Whether App! 📊✨</strong>
 </p>
 
 <p align="center">
-  🌐 Step into a World of Climate Insights where every data point tells a fascinating atmospheric story. 🌡️📈
+  🌐 **Step into a World of Climate Insights where every data point tells a fascinating atmospheric story.** 🌡️📈
 </p>
 
 <p align="center">
-  📈 **Visualize Temperatures**: Dive into interactive line charts showcasing average temperatures and dynamic bar charts highlighting extreme climate years.
+  📈 **Visualize Temperatures**: Dive into interactive <span style="font-family: 'Courier New';">line charts</span> showcasing average temperatures and dynamic <span style="color: #FF6347;">bar charts</span> highlighting extreme climate years.
 </p>
 
 <p align="center">
-  🌡️ **Distribution Insights**: Explore temperature distributions across cities with insightful violin plots using Seaborn.
+  🌡️ **Distribution Insights**: Explore temperature distributions across cities with insightful <span style="color: #1E90FF;">violin plots</span> using Seaborn.
 </p>
 
 <p align="center">
@@ -33,15 +33,15 @@
 </p>
 
 <p align="center">
-  📱 **Designed for Explorers**: Whether on a laptop, tablet, or phone, Whether App adapts for a delightful climate exploration experience.
+  📱 **Designed for Explorers**: Whether on a <span style="font-style: italic;">laptop</span>, <span style="font-style: italic;">tablet</span>, or <span style="font-style: italic;">phone</span>, Whether App adapts for a delightful climate exploration experience.
 </p>
 
 <p align="center">
-  <em>Note:</em> Whether App respects data integrity, ensuring accurate predictions through seamless modeling and analysis. Embark on a weather exploration journey!
+  <em>Note:</em> Whether App respects data integrity, ensuring accurate predictions through seamless modeling and analysis. <strong>Embark on a weather exploration journey!</strong>
 </p>
 
 <p align="center">
-  ✨ **Discover Climate Wonders** with Whether App from the Crystal Ball Project. Your Next Weather Adventure Awaits! ✨
+  ✨ **Discover Climate Wonders** with Whether App from the Crystal Ball Project. <span style="color: #8B4513;"><strong>Your Next Weather Adventure Awaits!</strong></span> ✨
 </p>
 
 ---
