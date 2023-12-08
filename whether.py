@@ -9,35 +9,26 @@ import ts as ts
 from pycaret.regression import setup, compare_models, pull, save_model, load_model
 import pandas_profiling
 import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
 from streamlit_pandas_profiling import st_profile_report
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import matplotlib.ticker as tck
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
 
 with st.sidebar:
     st.image("whether.gif")
     st.title("Whether App Prediction")
     choice = st.radio("Navigation",
-                      ["Upload", "Profiling", "Sorted Data Frame", "Extreme  Climate Years", "Graph", "City-Graph",
+                      ["Profiling", "Sorted Data Frame", "Extreme  Climate Years", "Graph", "City-Graph",
                        "Min&Max Temp", "Finding the temperature trends over years", "yearly average Temperatures"])
-    st.info("Explore weather trends effortlessly with our Streamlit app. View raw data, analyze monthly and yearly average temperatures, track temperature movements, and assess monthly rainfall. Use the dropdown to select a city and delve into insightful weather patterns. Streamlined, interactive, and informative.")
+    st.info("Explore weather trends effortlessly with our Streamlit app. View raw data, analyze  monthly and yearly average temperatures, track temperature movements, and assess monthly rainfall. Use the dropdown to select a city and delve into insightful weather patterns. Streamlined, interactive, and informative.")
 
-if choice == "Upload":
-    uploaded_file = st.file_uploader("Upload a ZIP file containing CSV files", type="zip")
-    if uploaded_file is not None:
-        # Unzip the uploaded file
-        with zipfile.ZipFile(io.BytesIO(uploaded_file.read()), 'r') as z:
-            # Iterate over files in the zip file
-            for file_info in z.infolist():
-                with z.open(file_info) as file:
-                    # Read each CSV file into a DataFrame
-                    df = pd.read_csv(file)
 
-                    # Display the first few rows of the DataFrame
-                    st.title(f"{file_info.filename}")
-                    st.write(df.head())
 
 if choice == "Profiling":
     st.title("Streamlit Data Processing Example")
@@ -391,4 +382,52 @@ if choice == "yearly average Temperatures":
         city_data = yavg[yavg['city'] == city]
         chart_data = pd.DataFrame(city_data[['year', 'tavg']])
         st.line_chart(chart_data.set_index('year'))
+
+if choice == "Predict Temperature":
+    st.title("Temperature Prediction")
+
+    # Load the weather data
+    df = pd.DataFrame()
+
+    # Loop through files in the specified directory
+    for dirname, _, filenames in os.walk('/dataset/'):
+        for filename in filenames:
+            s = pd.Series([filename])
+            x = s.str.split(pat='_', expand=True).iloc[0, 0]
+            y = s.str.split(pat='_', expand=True).iloc[0, 1]
+
+            if x == 'Station':
+                temp_geolocation = pd.read_csv(os.path.join(dirname, filename))
+            elif x != 'weather':
+                temp = pd.read_csv(os.path.join(dirname, filename), parse_dates=['time'])
+                temp['city'] = x
+                df = pd.concat([df, temp])
+        else:
+            temp = pd.read_csv(os.path.join(dirname, filename), parse_dates=['time'])
+            temp['city'] = y
+            df = pd.concat([df, temp])
+    # ... (existing code to read and concatenate data)
+
+    # Train a simple RandomForestRegressor (replace with your actual model)
+    # For simplicity, let's assume 'tavg' is the target variable
+    X = df.drop('tavg', axis=1)
+    y = df['tavg']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = RandomForestRegressor()
+    model.fit(X_train, y_train)
+
+    # Collect user input for prediction
+    user_input = st.form(key='prediction_form')
+    st.subheader("Enter Weather Data for Prediction:")
+    temperature = user_input.number_input("Temperature", min_value=-30.0, max_value=50.0, step=0.1)
+    humidity = user_input.number_input("Humidity", min_value=0.0, max_value=100.0, step=1.0)
+    wind_speed = user_input.number_input("Wind Speed", min_value=0.0, max_value=30.0, step=0.1)
+    submit_button = user_input.form_submit_button(label='Predict Temperature')
+
+    # Make a prediction based on user input
+    if submit_button:
+        input_data = {'humidity': humidity, 'wind_speed': wind_speed}
+        input_df = pd.DataFrame([input_data])
+        predicted_temperature = model.predict(input_df)
+        st.success(f"Predicted Temperature: {predicted_temperature[0]:.2f} °C")
 
